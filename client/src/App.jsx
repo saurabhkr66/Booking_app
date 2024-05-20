@@ -5,7 +5,11 @@ import Index from './components/Index'
 import Loginpage from './components/Loginpage'
 import Layout from './Layout/Layout'
 import Registerpage from './components/Registerpage'
+import axios from 'axios'
 
+
+
+axios.defaults.baseURL='http://localhost:4000'
 function App() {
   
 

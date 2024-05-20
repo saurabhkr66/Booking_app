@@ -14,7 +14,7 @@ function Loginpage() {
         placeholder='password'
         className='w-full border my-1 py-2 px-3 rounded-2xl'/>
         <button className='bg-red-500 p-2 w-full text-white rounded-full'>Login</button>
-<div>didn't have account?<Link to={'/register'}>Register</Link></div>
+<div className='text-center'>didn't have account?<Link className="underline text-red-600" to={'/register'}>Register</Link></div>
     </form>
    </div>
    </div>
