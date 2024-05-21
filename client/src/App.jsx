@@ -6,14 +6,16 @@ import Loginpage from './components/Loginpage'
 import Layout from './Layout/Layout'
 import Registerpage from './components/Registerpage'
 import axios from 'axios'
-
+import {UserContextProvider} from './init/UserContext'
 
 
 axios.defaults.baseURL='http://localhost:4000'
+axios.defaults.withCredentials=true;
 function App() {
   
 
   return (
+    <UserContextProvider>
     <Routes>
       <Route path="/" element={<Layout/>}>
       <Route index element={<Index/>}/>
@@ -22,6 +24,7 @@ function App() {
       </Route>
       
     </Routes>
+    </UserContextProvider>
   
      
     

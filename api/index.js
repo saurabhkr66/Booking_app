@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import User  from './models/User.js';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 dotenv.config({
     path:'./.env'
@@ -12,6 +13,7 @@ dotenv.config({
 const app=express();
 
 const bcryptSalt=bcrypt.genSaltSync(10);
+const jwtsecret='jgvdgvgfglgflgklgh76765bjffdgf';
 app.use(express.json());
  app.use(cors({
     credentials:true,
@@ -42,9 +44,16 @@ app.post('/login',async (req, res) => {
     const {email,password}=req.body;
     const userDoc=await User.findOne({email});
     if(userDoc) {
+        
      const passok=bcrypt.compareSync(password,userDoc.password);
      if(passok){
-        res.cookie('token','').json('password match');
+        jwt.sign({email:userDoc.email,id:userDoc._id},jwtsecret,{},(err,token)=>{
+            if(err){
+                throw err;
+            }
+        
+        res.cookie('token',token).json('password match');
+        });
      }else{
         res.status(422).json('password not match');
      }
