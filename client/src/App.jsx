@@ -7,7 +7,7 @@ import Layout from './Layout/Layout'
 import Registerpage from './components/Registerpage'
 import axios from 'axios'
 import {UserContextProvider} from './init/UserContext'
-import Account from './components/Account.jsx'
+import Account from './components/Account'
 
 
 axios.defaults.baseURL='http://localhost:4000'
