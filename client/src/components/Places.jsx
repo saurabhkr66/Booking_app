@@ -1,9 +1,45 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-
+import Perks from '../Perks';
+import axios from 'axios';
 function Places() {
   const {action}=useParams();
-
+const [title,setTitle]=useState('')
+const [address,setAddress]=useState('')
+const [description,setDescription]=useState('')
+const [photoLink,setPhotoLink]=useState('')
+const [addedPhotos,setAddedPhotos]=useState('')
+const [perks,setPerks]=useState('')
+const [extraInfo,setExtraInfo]=useState('')
+const [checkIn,setCheckIn]=useState('')
+const [checkOut,setCheckOut]=useState('')
+const [maxGuests,setMaxGuests]=useState(1)
+function inputHeader(text){
+  
+  return(<h2 className='text-2xl mt-4'>{text}</h2>)
+}
+function inputDescription(text){
+  return (
+  <p className='text-gray-500 text-sm'>{text}</p>
+)
+}
+function preInput(header,description){
+  return (
+    <>
+    {inputHeader(header)}
+    {inputDescription(description)}
+    </>
+  )
+}
+//  async function addPhotoBylink(e){
+//   e.preventDefault();
+//  try {
+//    await axios.post('/upload-by-link',{link:photoLink})
+ 
+//  } catch (error) {
+//   console.log(error)
+//  }
+// }
   return (
     <div>
       {action !== 'new' &&(
@@ -20,18 +56,20 @@ function Places() {
     {action ==='new' && (
      <div>
         <form>
-          <h2 className='text-2xl mt-4'>Title</h2>
-          <p className='text-gray-500 text-sm'>title for your place</p>
-        <input type="text"className="px-4 py-2 border-2 border-gray-300 rounded-full focus:outline-none focus:border-blue-500 focus:shadow-md transition duration-300 ease-in-out w-full"placeholder='title, for ex: my lovely apartement'/>
-        <h2 className='text-2xl mt-4'>Address</h2>
-        <p className='text-gray-500 text-sm'>address to this place</p>
-         <input type="text"className="px-4 py-2 border-2 border-gray-300 rounded-full focus:outline-none focus:border-blue-500 focus:shadow-md transition duration-300 ease-in-out w-full"placeholder='address'/>
-         <h2 className='text-2xl mt-4'>Photos</h2>
-
-         <p className='text-gray-500 text-sm'>more=better  </p>   
+          {preInput('title','title for your place')}
+        <input type="text" value={title} onChange={e=>setTitle(e.target.value)}className="px-4 py-2 border-2 border-gray-300 rounded-full focus:outline-none focus:border-blue-500 focus:shadow-md transition duration-300 ease-in-out w-full"placeholder='title, for ex: my lovely apartement'/>
+        {preInput('address','address to this place')}
+         <input type="text"
+         value={address} 
+         onChange={e=>setAddress(e.target.value)}
+         className="px-4 py-2 border-2 border-gray-300 rounded-full focus:outline-none focus:border-blue-500 focus:shadow-md transition duration-300 ease-in-out w-full"placeholder='address'/>
+         {preInput('photos','more == better')}
          <div className='flex'>
-         <input type="text"className="px-4 py-2 border-2 border-gray-300 rounded-full focus:outline-none focus:border-blue-500 focus:shadow-md transition duration-300 ease-in-out w-full"placeholder='add photos using a link (jpg file)'/>
-         <button className='bg-gray-200 px-4 rounded-2xl'>add&nbsp;photo</button>
+         <input type="text"
+         value={photoLink}
+          onChange={e=>setPhotoLink(e.target.value)}
+          className="px-4 py-2 border-2 border-gray-300 rounded-full focus:outline-none focus:border-blue-500 focus:shadow-md transition duration-300 ease-in-out w-full"placeholder='add photos using a link (jpg file)'/>
+         <button onClick={addPhotoBylink} className='bg-gray-200 px-4 rounded-2xl'>add&nbsp;photo</button>
          </div>
          <div className='mt-2 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6'>
          <button className="flex gap-2 justify-center border bg-transparent rounded-2xl p-8">
@@ -43,49 +81,56 @@ function Places() {
           
           </button> 
           </div> 
-          <h2 className='text-2xl mt-4'>Description</h2>
-          <p className='text-gray-500 text-sm'>description of the place</p>
-          <textarea className='w-full border my-1 py-2 px-3 rounded-2xl'/>
-          <h2 className='text-2xl mt-4'>Perks</h2>
-          <p className='text-gray-500 text-sm'>select all the perks</p>
-          <div>
-            <label>
-              
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-  <path strokeLinecap="round" strokeLinejoin="round" d="M8.288 15.038a5.25 5.25 0 0 1 7.424 0M5.106 11.856c3.807-3.808 9.98-3.808 13.788 0M1.924 8.674c5.565-5.565 14.587-5.565 20.152 0M12.53 18.22l-.53.53-.53-.53a.75.75 0 0 1 1.06 0Z" />
-</svg>
-<input type="checkbox"/>
-
-              <span>wifi</span>
-            </label>
-            <label>
-              <input type="checkbox"/>
-              <span>free perks</span>
-            </label>
-            <label>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-  <path strokeLinecap="round" strokeLinejoin="round" d="M6 20.25h12m-7.5-3v3m3-3v3m-10.125-3h17.25c.621 0 1.125-.504 1.125-1.125V4.875c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125Z" />
-</svg>
-
-              <input type="checkbox"/>
-
-              <span>tv</span>
-            </label>
-            <label>
-              <input type="checkbox"/>
-              <span>private entrance</span>
-            </label>
-            <label>
-              <input type="checkbox"/>
-              <span>wifi</span>
-            </label>
-            <label>
-              <input type="checkbox"/>
-              <span>pets</span>
-            </label>
+         {preInput('Description','Description of this place')}
+          <textarea value={description}
+          onChange={e=>setDescription(e.target.value)}
+          className='w-full border gap-2 my-1 py-2 px-3 rounded-2xl'/>
+         {preInput('perks','Perks of this place')}
+          <div className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6'>
+          <Perks selected={perks} onChange={setPerks}/>
             
           </div>
-          </form>
+          <h2 className='text-2xl mt-4'>Extra info</h2>
+          <p className='text-gray-500 text-sm'>house rules etc</p>
+          <textarea 
+          value={extraInfo}
+          onChange={e=>setExtraInfo(e.target.value)}
+          
+          className='w-full border gap-2 my-1 py-2 px-3 rounded-2xl'/>
+          
+          <h2 className='text-2xl mt-4'>check in and out time</h2>
+          <p className='text-gray-500 text-sm'>plz add check in and out time</p>
+          <div>
+            <div className=''>
+            <h3 className='text-lg font-bold'>check in time</h3>
+
+            <input 
+            value={checkIn}
+            onChange={e=>setCheckIn(e.target.value)}
+            
+            type="datetime-local" className='border my-1 py-2 px-3 rounded-2xl'/>
+
+            </div>
+            <div>
+              <h3 className='text-lg font-bold'>check out time</h3>
+            <input 
+            value={checkOut}
+            onChange={e=>setCheckOut(e.target.value)}
+            type="datetime-local" className=' border my-1 py-2 px-3 rounded-2xl'/>
+
+            </div>
+            <div>
+            <h3 className='text-lg font-bold'>max no of guests</h3>
+
+            <input 
+            value={maxGuests}
+            onChange={e=>setMaxGuests(e.target.value)}
+            type="number" className=' border my-1 py-2 px-3 rounded-2xl'/>
+
+            </div>
+            </div>
+            <button className='bg-red-500 text-white justify-around inline-flex gap-2 py-2 px-6 rounded-full w-full'>Save</button>
+            </form>
       </div>
     )}
     </div>

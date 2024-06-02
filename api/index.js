@@ -6,6 +6,7 @@ import User  from './models/User.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import cookieParser from 'cookie-parser';
+import imageDownloader from 'image-downloader';
 dotenv.config({
     path:'./.env'
 })
@@ -81,4 +82,14 @@ jwt.verify(token,jwtsecret,{},async (err,userdata)=>{
 app.post('/logout',(req,res)=>{
     res.cookie('token', '').json(true);
 });
+
+// app.post('/upload-by-link',async(req,res)=>{
+//     const {link}=req.body;
+//     const newName=Date.now()+'.jpg';
+//     await imageDownloader.image({
+// url:link,
+// dest:  '/uploads'+newName,
+//     })
+//     res.json('/uploads'+newName);
+// })
 app.listen(4000);
