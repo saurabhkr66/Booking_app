@@ -7,6 +7,10 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import cookieParser from 'cookie-parser';
 import imageDownloader from 'image-downloader';
+import Place from './models/Place.js';
+
+
+
 dotenv.config({
     path:'./.env'
 })
@@ -92,4 +96,27 @@ app.post('/logout',(req,res)=>{
 //     })
 //     res.json('/uploads'+newName);
 // })
+
+app.post('/places',(req,res)=>{
+    const {token}=req.cookies;
+    const {title,address,description,perks,
+        extraInfo,checkIn,checkOut,maxGuests}=req.body;
+    
+    jwt.verify(token,jwtsecret,{},async(err,userdata)=>{
+        if(err) throw err;
+      const placeDoc= await Place.create({
+            
+            owner:userdata.id,
+            title,address,
+            description,perks,
+            extraInfo,checkIn,
+            checkOut,maxGuests
+
+
+
+        })
+        res.json(placeDoc);
+})
+ 
+})
 app.listen(4000);
